@@ -1,4 +1,4 @@
-package com.ataybur.utils;
+package com.ataybur.components;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import com.ataybur.enums.ColumnTypes;
 import com.ataybur.pojo.SubscriberDebt;
+import com.ataybur.utils.SubscriberDebtColumnHelper;
 
 public class SubscriberTableModel extends AbstractTableModel {
 
