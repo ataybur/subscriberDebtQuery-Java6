@@ -17,10 +17,12 @@ import com.ataybur.utils.CustomMap;
 import com.ataybur.utils.ExceptionHandler;
 import com.ataybur.utils.FileSplitter;
 import com.ataybur.utils.Logger;
+import com.ataybur.utils.SubscriberTableModelHelper;
 
 public class OpenButton extends JButton {
     private static final long serialVersionUID = 4998596640891773199L;
-    public OpenButton(final App app, final CustomMap map) {
+
+    public OpenButton(final App app, final CustomMap map, final SubscriberTableModel model) {
 	super(GuiConstants.OPEN_BUTTON);
 	addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ae) {
@@ -33,8 +35,12 @@ public class OpenButton extends JButton {
 			new FileSplitter(file) //
 				.split() //
 				.read(map);
-			Logger.getInstance().write();
-			JOptionPane.showMessageDialog(null, String.format(MessageConstants.INSERTED_RECORDS_COUNT, map.getLineCounter() , System.getProperty(Constants.LINE_SEPERATOR), map.size()));
+			new SubscriberTableModelHelper(model) //
+				.addMapToRowList(map);
+			Logger //
+			.getInstance() //
+				.write();
+			JOptionPane.showMessageDialog(null, String.format(MessageConstants.INSERTED_RECORDS_COUNT, map.getLineCounter(), Constants.SYS_LINE_SEPERATOR, map.size()));
 		    } catch (IOException e) {
 			new ExceptionHandler(e).handle();
 		    }

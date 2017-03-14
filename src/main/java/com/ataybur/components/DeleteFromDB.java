@@ -20,6 +20,7 @@ public class DeleteFromDB extends JButton {
 	    public void actionPerformed(ActionEvent ae) {
 		try {
 		    new DBHelper() //
+			    .openConnection() //
 			    .deleteDB() //
 			    .closeAll();
 		} catch (SQLException e) {

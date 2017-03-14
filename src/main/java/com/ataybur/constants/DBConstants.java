@@ -1,7 +1,7 @@
 package com.ataybur.constants;
 
 public class DBConstants {
-    public static final String CREATE_QUERY = " CREATE TABLE subscriber_debt ( " + //
+    public static final String CREATE_QUERY = " CREATE TABLE IF NOT EXISTS subscriber_debt ( " + //
 	    " subscriber_number text, " + //
 	    "  debt real NOT NULL, " + //
 	    "  expired_day text, " + //

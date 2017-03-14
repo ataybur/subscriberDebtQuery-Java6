@@ -14,7 +14,6 @@ import com.ataybur.components.DeleteFromDB;
 import com.ataybur.components.ExportButton;
 import com.ataybur.components.ImportFromDB;
 import com.ataybur.components.InsertToDBButton;
-import com.ataybur.components.OkButton;
 import com.ataybur.components.OpenButton;
 import com.ataybur.components.SubscriberNumberTextField;
 import com.ataybur.components.SubscriberTable;
@@ -43,16 +42,14 @@ public class App extends JFrame {
 	SubscriberTableModel model = new SubscriberTableModel();
 	JTable table = new SubscriberTable(model);
 	JScrollPane scrollPane = new JScrollPane(table);
-	JTextField queryField = new SubscriberNumberTextField();
-	JButton openButton = new OpenButton(this, map);
-	JButton okButton = new OkButton(model, queryField, map);
+	JTextField queryField = new SubscriberNumberTextField(model, map);
+	JButton openButton = new OpenButton(this, map, model);
 	JButton exportButton = new ExportButton(this, model);
 	JButton insertToDBButton = new InsertToDBButton(map);
-	JButton importFromDB = new ImportFromDB(map);
+	JButton importFromDB = new ImportFromDB(map, model);
 	JButton deleteFromDB = new DeleteFromDB();
 	c.add(openButton);
 	c.add(queryField);
-	c.add(okButton);
 	c.add(exportButton);
 	c.add(insertToDBButton);
 	c.add(importFromDB);
@@ -67,6 +64,8 @@ public class App extends JFrame {
 		    .createSqlLiteDB() //
 		    .closeAll();
 	} catch (SQLException e) {
+	    new ExceptionHandler(e).handle();
+	} catch (Exception e) {
 	    new ExceptionHandler(e).handle();
 	}
 	app.setVisible(true);

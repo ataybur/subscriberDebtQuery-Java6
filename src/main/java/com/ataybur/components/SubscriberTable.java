@@ -11,6 +11,7 @@ public class SubscriberTable extends JTable {
     
     public SubscriberTable(final SubscriberTableModel model) {
 	super(model);
+	setCellSelectionEnabled(true);
 	getColumnModel() //
 		.getColumn(ColumnTypes.EXPIRED_DAY.getValue()) //
 		.setCellRenderer(new DateCellRenderer());

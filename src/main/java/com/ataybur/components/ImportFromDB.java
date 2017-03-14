@@ -14,21 +14,24 @@ import com.ataybur.constants.MessageConstants;
 import com.ataybur.utils.CustomMap;
 import com.ataybur.utils.DBHelper;
 import com.ataybur.utils.ExceptionHandler;
+import com.ataybur.utils.SubscriberTableModelHelper;
 
 public class ImportFromDB extends JButton {
 
     private static final long serialVersionUID = -2984629747115677293L;
 
-    public ImportFromDB(final CustomMap map) {
+    public ImportFromDB(final CustomMap map, final SubscriberTableModel model) {
 	super(GuiConstants.IMPORT_BUTTON);
 	addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ae) {
 		try {
 		    new DBHelper() //
+			    .openConnection() //
 			    .selectIntoMap(map) //
 			    .closeAll();
-		    JOptionPane.showMessageDialog(null,
-			    String.format(MessageConstants.INSERTED_RECORDS_COUNT, map.getLineCounter(), System.getProperty(Constants.LINE_SEPERATOR), map.size()));
+		    new SubscriberTableModelHelper(model) //
+			    .addMapToRowList(map);
+		    JOptionPane.showMessageDialog(null, String.format(MessageConstants.INSERTED_RECORDS_COUNT, map.getLineCounter(), Constants.SYS_LINE_SEPERATOR, map.size()));
 		} catch (SQLException e) {
 		    new ExceptionHandler(e).handle();
 		} catch (ParseException e) {

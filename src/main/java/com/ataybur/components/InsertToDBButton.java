@@ -14,13 +14,14 @@ import com.ataybur.utils.ExceptionHandler;
 public class InsertToDBButton extends JButton {
 
     private static final long serialVersionUID = 2448777027105508142L;
-    
+
     public InsertToDBButton(final CustomMap map) {
 	super(GuiConstants.WRITE_BUTTON);
 	addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ae) {
 		try {
 		    new DBHelper() //
+			    .openConnection() //
 			    .insertToDB(map) //
 			    .closeAll();
 		} catch (SQLException e) {

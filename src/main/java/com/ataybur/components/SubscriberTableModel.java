@@ -18,9 +18,11 @@ public class SubscriberTableModel extends AbstractTableModel {
     public SubscriberTableModel() {
 	super();
     }
-    
+
     public void addRow(List<SubscriberDebt> subscriberDebtList) {
-	list.addAll(subscriberDebtList);
+	if (subscriberDebtList != null) {
+	    list.addAll(subscriberDebtList);
+	}
 	fireTableRowsInserted(list.size(), list.size());
     }
 

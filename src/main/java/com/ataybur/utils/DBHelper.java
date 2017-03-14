@@ -19,21 +19,23 @@ import com.ataybur.pojo.SubscriberDebt;
 
 public class DBHelper {
     private Connection connection;
+    private String url;
 
-    public DBHelper() throws SQLException {
+    public DBHelper() {
 	File dbfile = new File(Constants.DOT);
-	String url = String.format(DBConstants.URL_TEMPLATE, dbfile.getAbsolutePath(), DBConstants.DB_NAME);
-	connection = DriverManager.getConnection(url);
+	url = String.format(DBConstants.URL_TEMPLATE, dbfile.getAbsolutePath(), DBConstants.DB_NAME);
     }
-
+    public DBHelper openConnection() throws SQLException{
+	connection = DriverManager.getConnection(url);
+	return this;
+    }
     public WrapperHelper createSqlLiteDB() throws SQLException {
 	File file = new File(DBConstants.DB_NAME);
 	if (!file.exists()) {
+	    connection = DriverManager.getConnection(url);
 	    Statement stmt = connection.createStatement();
 	    stmt.execute(DBConstants.CREATE_QUERY);
-	    connection.close();
-	    stmt.close();
-	    return new WrapperHelper(connection, stmt);
+	    return new WrapperHelper(connection);
 	}
 	return new WrapperHelper();
     }
@@ -47,11 +49,11 @@ public class DBHelper {
 		pstmt.setString(3, new DateFormatter().format(subscriberDebt.getExpiredDay()));
 		pstmt.setString(4, subscriberDebt.getPeriod());
 		pstmt.setString(5, subscriberDebt.getReceiptNo());
-		pstmt.executeUpdate();
+		pstmt.addBatch();
 	    }
 	}
 	pstmt.executeBatch();
-	return new WrapperHelper(connection, pstmt);
+	return new WrapperHelper(connection);
     }
 
     public WrapperHelper selectIntoMap(CustomMap map) throws SQLException, ParseException {
@@ -67,12 +69,12 @@ public class DBHelper {
 	    SubscriberDebt subscriberDebt = new SubscriberDebt(subscriberNumber, debt, expiredDayDate, period, receiptNumber);
 	    new MapHelper(map).addElement(subscriberDebt);
 	}
-	return new WrapperHelper(connection, rs, stmt);
+	return new WrapperHelper(connection, rs);
     }
 
     public WrapperHelper deleteDB() throws SQLException {
 	PreparedStatement preparedStatement = connection.prepareStatement(DBConstants.DELETE_QUERY);
 	preparedStatement.executeUpdate();
-	return new WrapperHelper(connection, preparedStatement);
+	return new WrapperHelper(connection);
     }
 }

@@ -8,6 +8,9 @@ public class Constants {
     public static final String EXPORT_FILE_NAME = "exported.html";
     public static final String ERROR_LOG_FILE_NAME = "error.log";
     public static final String LINE_SEPERATOR = "line.separator";
+    public static final String SYS_LINE_SEPERATOR = System.getProperty(LINE_SEPERATOR);
+    
+    
     public static final String DOT = ".";
     public static final String EMPTY = "";
     public static final byte PART_SIZE = 63;
