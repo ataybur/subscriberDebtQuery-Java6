@@ -3,7 +3,9 @@ package com.ataybur.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiFileReader {
+import com.ataybur.ThreadReader;
+
+public class MultiFileReader implements ThreadReader {
     private List<String> splittedFileNames;
 
     public MultiFileReader(List<String> splittedFileNames) {

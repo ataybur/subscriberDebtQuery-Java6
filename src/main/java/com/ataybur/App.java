@@ -26,48 +26,48 @@ import com.ataybur.utils.ExceptionHandler;
 /**
  * @author Burak ATAY
  * @since 13.03.2017
- * */
+ */
 public class App extends JFrame {
 
-    private static final long serialVersionUID = 2515960725434180468L;
+	private static final long serialVersionUID = 2515960725434180468L;
 
-    private volatile CustomMap map = new CustomMap();
+	private volatile CustomMap map = new CustomMap();
 
-    public App() {
-	super(GuiConstants.TITLE);
-	setSize(900, 400);
-	setDefaultCloseOperation(EXIT_ON_CLOSE);
-	Container c = getContentPane();
-	c.setLayout(new FlowLayout());
-	SubscriberTableModel model = new SubscriberTableModel();
-	JTable table = new SubscriberTable(model);
-	JScrollPane scrollPane = new JScrollPane(table);
-	JTextField queryField = new SubscriberNumberTextField(model, map);
-	JButton openButton = new OpenButton(this, map, model);
-	JButton exportButton = new ExportButton(this, model);
-	JButton insertToDBButton = new InsertToDBButton(map);
-	JButton importFromDB = new ImportFromDB(map, model);
-	JButton deleteFromDB = new DeleteFromDB();
-	c.add(openButton);
-	c.add(queryField);
-	c.add(exportButton);
-	c.add(insertToDBButton);
-	c.add(importFromDB);
-	c.add(deleteFromDB);
-	c.add(scrollPane);
-    }
-
-    public static void main(String args[]) {
-	App app = new App();
-	try {
-	    new DBHelper() //
-		    .createSqlLiteDB() //
-		    .closeAll();
-	} catch (SQLException e) {
-	    new ExceptionHandler(e).handle();
-	} catch (Exception e) {
-	    new ExceptionHandler(e).handle();
+	public App() {
+		super(GuiConstants.TITLE);
+		setSize(900, 400);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		SubscriberTableModel model = new SubscriberTableModel();
+		JTable table = new SubscriberTable(model);
+		JScrollPane scrollPane = new JScrollPane(table);
+		JTextField queryField = new SubscriberNumberTextField(model, map);
+		JButton openButton = new OpenButton(this, map, model);
+		JButton exportButton = new ExportButton(this, model);
+		JButton insertToDBButton = new InsertToDBButton(map);
+		JButton importFromDB = new ImportFromDB(map, model);
+		JButton deleteFromDB = new DeleteFromDB();
+		c.add(openButton);
+		c.add(queryField);
+		c.add(exportButton);
+		c.add(insertToDBButton);
+		c.add(importFromDB);
+		c.add(deleteFromDB);
+		c.add(scrollPane);
 	}
-	app.setVisible(true);
-    }
+
+	public static void main(String args[]) {
+		App app = new App();
+		try {
+			new DBHelper() //
+					.createSqlLiteDB() //
+					.closeAll();
+		} catch (SQLException e) {
+			new ExceptionHandler(e).handle();
+		} catch (Exception e) {
+			new ExceptionHandler(e).handle();
+		}
+		app.setVisible(true);
+	}
 }
