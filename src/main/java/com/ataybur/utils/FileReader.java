@@ -39,7 +39,7 @@ public class FileReader {
 		List<MyThread> splittedFileNames = new ArrayList<MyThread>();
 		inputStream = new FileInputStream(file);
 		for (int i = 0; i < fileCount; i++) {
-			MyThread thread = new MyThread(inputStream, i * Constants.PART_SIZE);
+			MyThread thread = new MyThread(inputStream, i, lineCountTotal);
 			splittedFileNames.add(thread);
 		}
 		return splittedFileNames;

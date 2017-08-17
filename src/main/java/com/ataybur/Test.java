@@ -7,18 +7,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.ataybur.utils.MyThread;
-
 public class Test {
 	private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
-	
+
 	private static byte[] out = new StringBuffer() //
 			.append("abc1").append(System.lineSeparator()) //
 			.append("abc2").append(System.lineSeparator()) //
 			.append("abc3").append(System.lineSeparator()) //
 			.append("abc4").append(System.lineSeparator()) //
-			.toString()
-			.getBytes();
+			.toString().getBytes();
+
+	private static int length = out.length / 4;
 	private static File f;
 
 	public static void main(String[] args) {
@@ -26,10 +25,10 @@ public class Test {
 		try {
 			createFile();
 			i = new FileInputStream(f);
-			MyThread first = new MyThread(i, 0);
-			MyThread sec = new MyThread(i, 1);
-			MyThread th = new MyThread(i, 2);
-			MyThread thq = new MyThread(i,3);
+			MyThread first = new MyThread(i, 0, length);
+			MyThread sec = new MyThread(i, 1, length);
+			MyThread th = new MyThread(i, 2, length);
+			MyThread thq = new MyThread(i, 3, length);
 			first.run();
 			sec.run();
 			th.run();
@@ -63,26 +62,43 @@ public class Test {
 		i.close();
 		f.delete();
 	}
+
 }
 
-class MyThread1 extends Thread {
+class MyThread extends Thread {
 	FileInputStream i;
 	int index;
+	final int length;
 
-	public MyThread1(FileInputStream i, int index) {
+	public MyThread(FileInputStream i, int index, final int length) {
 		super();
 		this.i = i;
-		this.index = index;
+		this.index = index * length;
+		this.length = length - System.lineSeparator().getBytes().length;
 	}
 
 	@Override
 	public void run() {
+		StringBuffer stringBuffer = new StringBuffer();
 		try {
-			i.getChannel().position(index);
-			System.out.println("read: " + (char) i.read());
+			int ind = 0;
+			while (i.read() != -1) {
+				if (this.length == ind) {
+					break;
+				}
+				ind++;
+				i.getChannel().position(index++);
+				char ch = (char) i.read();
+				stringBuffer.append(ch);
+			}
+			System.out.println("read: " + stringBuffer.toString());
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public FileInputStream getI() {
+		return i;
 	}
 }
