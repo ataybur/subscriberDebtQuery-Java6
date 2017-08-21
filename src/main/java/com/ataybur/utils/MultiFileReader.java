@@ -21,14 +21,19 @@ public class MultiFileReader implements ThreadReader {
 	    worker.start();
 	    threads.add(worker);
 	}
-	int running = 0;
-	do {
-	    running = 0;
-	    for (Thread thread : threads) {
-		if (thread.isAlive()) {
-		    running++;
-		}
-	    }
-	} while (running > 0);
+	try {
+		CountDownLatchSingleton.getInstance().await();
+	} catch (InterruptedException e) {
+		e.printStackTrace();
+	}
+//	int running = 0;
+//	do {
+//	    running = 0;
+//	    for (Thread thread : threads) {
+//		if (thread.isAlive()) {
+//		    running++;
+//		}
+//	    }
+//	} while (running > 0);
     }
 }

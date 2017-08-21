@@ -16,5 +16,8 @@ public class Constants {
     public static final String DOT = ".";
     public static final String EMPTY = "";
     public static final int PART_SIZE = "D00012641400000982000000002550.6511-05-20160042016A-561418170".length()+System.lineSeparator().getBytes().length;
-    public static final int MAX_FILE_COUNT = 100;
+//    public static final int PART_SIZE = "1234".length()+System.lineSeparator().getBytes().length;
+    
+    public static final int MAX_FILE_COUNT = Runtime.getRuntime().availableProcessors();
+//    public static final int MAX_FILE_COUNT = 100;
 }
