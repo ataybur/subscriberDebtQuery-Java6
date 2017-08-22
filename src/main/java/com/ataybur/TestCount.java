@@ -21,15 +21,19 @@ public class TestCount {
 	public static void main(String[] args) {
 		TestCount testCount = new TestCount();
 		testCount.testCount();
-		testCount.writeFile1();
+//		testCount.writeFile1();
 	}
 
 	public void testCount() {
-		try (Stream<String> stream = Files.lines(Paths.get(Constants.FILE_NAME))) {
+		try (Stream<String> stream = Files.lines(Paths.get(Constants.FILE_NAME_2))) {
 			// stream.filter((s) -> s.getBytes().length !=
 			// 61).forEach(System.out::println);
 //			stream.filter((s) -> s.length() != Constants.PART_SIZE - 2).forEach(System.out::println);
 			stream.filter((s) -> s.length() == Constants.PART_SIZE - 2).forEach(addList::add);
+			int result = 45256;
+			assert result == addList.size();
+
+			System.out.println("size: "+addList.size());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -24,11 +24,11 @@ public class FileReader {
 	private List<MyThread> splitInner() throws IOException {
 		RandomAccessFile inputStream;
 		long fileSize = file.length();
-		long add = fileSize % Constants.PART_SIZE;
+		// long add = fileSize % Constants.PART_SIZE;
 		long tempFileSize = fileSize;
-		if (add != 0) {
-			tempFileSize += add;
-		}
+		// if (add != 0) {
+		// tempFileSize += add;
+		// }
 		long lineCountTotal = tempFileSize / Constants.PART_SIZE;
 		long fileCount;
 		if (lineCountTotal > Constants.MAX_FILE_COUNT) {
@@ -36,14 +36,18 @@ public class FileReader {
 		} else {
 			fileCount = lineCountTotal;
 		}
+		long add = lineCountTotal % fileCount;
+		if (add != 0) {
+			lineCountTotal += (fileCount - add);
+		}
+		lineCountTotal /= fileCount;
 		List<MyThread> splittedFileNames = new ArrayList<MyThread>();
-		inputStream = new RandomAccessFile(file,"r");
+		inputStream = new RandomAccessFile(file, "r");
 		for (int i = 0; i < fileCount; i++) {
-			MyThread thread = new MyThread(inputStream, i);
+			MyThread thread = new MyThread(inputStream, i, lineCountTotal);
 			splittedFileNames.add(thread);
 		}
 		return splittedFileNames;
 	}
 
-	
 }
