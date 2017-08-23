@@ -15,6 +15,7 @@ import com.ataybur.utils.CustomMap;
 import com.ataybur.utils.ExceptionHandler;
 import com.ataybur.utils.FileReader;
 import com.ataybur.utils.Logger;
+import com.ataybur.utils.SingleThreadReader;
 import com.ataybur.utils.SubscriberTableModelHelper;
 
 public class OpenButton extends JButton {
@@ -29,9 +30,11 @@ public class OpenButton extends JButton {
 			if (option == JFileChooser.APPROVE_OPTION) {
 				File file = chooser.getSelectedFile();
 				try {
-					new FileReader(file) //
-							.split() //
-							.read(map);
+					new SingleThreadReader(file)
+					.read(map);
+//					new FileReader(file) //
+//							.split() //
+//							.read(map);
 					new SubscriberTableModelHelper(model) //
 							.addMapToRowList(map);
 					Logger //

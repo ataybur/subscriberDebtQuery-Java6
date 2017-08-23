@@ -14,18 +14,19 @@ public class MultiThreadReader implements ThreadReader {
 
 	@Override
 	public void read(CustomMap map) {
+		long start = System.currentTimeMillis();
 		for (MyThread worker : this.list) {
+			worker.setMap(map);
 			worker.start();
 		}
-		int running = 0;
-		do {
-			running = 0;
-			for (Thread thread : this.list) {
-				if (thread.isAlive()) {
-					running++;
-				}
-			}
-		} while (running > 0);
+		try {
+			CountDownLatchSingleton.getInstance().await();
+			long end = System.currentTimeMillis();
+			long delta = end-start;
+			System.out.println("Total1: "+delta);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		try {
 			this.list.get(0).getI().close();
 		} catch (IOException e) {

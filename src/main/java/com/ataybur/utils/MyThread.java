@@ -14,6 +14,7 @@ public class MyThread extends Thread {
 	public static AtomicInteger counter = new AtomicInteger(0);
 	private MyThreadLocal fileLocal;
 	private AtomicLong lineCountTotal;
+	private CustomMap map;
 
 	public MyThread(RandomAccessFile i, int index, long lineCountTotal) {
 		super();
@@ -21,7 +22,7 @@ public class MyThread extends Thread {
 		this.length = Constants.PART_SIZE - System.lineSeparator().getBytes().length;
 		this.fileLocal = new MyThreadLocal(i, indexAI, this);
 		this.lineCountTotal = new AtomicLong(lineCountTotal);
-		System.out.println("this.index: " + indexAI + ", this.length: " + this.length);
+//		System.out.println("this.index: " + indexAI + ", this.length: " + this.length);
 	}
 
 	@Override
@@ -31,14 +32,19 @@ public class MyThread extends Thread {
 		AtomicLong initialValue = new AtomicLong(0);
 		while (this.lineCountTotal.get() != initialValue.getAndIncrement()) {
 			String result = fileLocal.get();
-			System.out.println("last index: "+initialValue.get()+", read: " + result);
-			System.out.println("counter: " + counter.incrementAndGet());
+			new LineParser(result, map).parseLine();
+//			System.out.println("last index: "+initialValue.get()+", read: " + result);
+//			System.out.println("counter: " + counter.incrementAndGet());
 		}
 		CountDownLatchSingleton.getInstance().countDown();
 	}
 
 	public RandomAccessFile getI() {
 		return fileLocal.getI();
+	}
+	
+	public void setMap(CustomMap map) {
+		this.map = map;
 	}
 }
 

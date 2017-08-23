@@ -1,7 +1,6 @@
 package com.ataybur.utils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -24,11 +23,7 @@ public class FileReader {
 	private List<MyThread> splitInner() throws IOException {
 		RandomAccessFile inputStream;
 		long fileSize = file.length();
-		// long add = fileSize % Constants.PART_SIZE;
 		long tempFileSize = fileSize;
-		// if (add != 0) {
-		// tempFileSize += add;
-		// }
 		long lineCountTotal = tempFileSize / Constants.PART_SIZE;
 		long fileCount;
 		if (lineCountTotal > Constants.MAX_FILE_COUNT) {
@@ -37,14 +32,19 @@ public class FileReader {
 			fileCount = lineCountTotal;
 		}
 		long add = lineCountTotal % fileCount;
-		if (add != 0) {
-			lineCountTotal += (fileCount - add);
-		}
+
 		lineCountTotal /= fileCount;
 		List<MyThread> splittedFileNames = new ArrayList<MyThread>();
 		inputStream = new RandomAccessFile(file, "r");
 		for (int i = 0; i < fileCount; i++) {
-			MyThread thread = new MyThread(inputStream, i, lineCountTotal);
+			int addition;
+			if (add > 0) {
+				addition = 1;
+				add--;
+			}else {
+				addition = 0;
+			}
+			MyThread thread = new MyThread(inputStream, i, lineCountTotal+addition);
 			splittedFileNames.add(thread);
 		}
 		return splittedFileNames;

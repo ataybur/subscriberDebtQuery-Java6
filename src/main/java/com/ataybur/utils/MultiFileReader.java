@@ -14,6 +14,7 @@ public class MultiFileReader implements ThreadReader {
 
     public void read(CustomMap map) {
 	List<Thread> threads = new ArrayList<Thread>();
+	long start = System.currentTimeMillis();
 	for (String fileName : splittedFileNames) {
 	    Runnable task = new FileRunnable(fileName, map);
 	    Thread worker = new Thread(task);
@@ -23,6 +24,9 @@ public class MultiFileReader implements ThreadReader {
 	}
 	try {
 		CountDownLatchSingleton.getInstance().await();
+		long end = System.currentTimeMillis();
+		long delta = end-start;
+		System.out.println("Total1: "+delta);
 	} catch (InterruptedException e) {
 		e.printStackTrace();
 	}
